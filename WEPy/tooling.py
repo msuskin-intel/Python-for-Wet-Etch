@@ -41,3 +41,70 @@ WHERE
             pass
 
         return s
+    
+    def get_state(self) -> str:
+        if not self.isTool: raise ValueError("get_state() was called on a tool object with isTool == False! This could have resulted in a bad SQL query. ")
+
+        self.conn = PyUber.connect(datasource="D1D_PROD_XEUS", TimeOutInSeconds = 600)
+        filterwarnings("ignore", category=UserWarning, message='.*pandas only supports SQLAlchemy connectable.*')
+
+        s = f"""SELECT 
+          e.state AS state
+FROM 
+F_ENTITY e
+WHERE
+              e.entity_deleted_flag = 'N' 
+ AND      e.entity = '{self.name}' """
+        
+        df = pd.read_sql_query(s, self.conn)
+        return str(df['STATE'].values[0])
+
+    def isCu(self) -> bool:
+        if not self.isTool: raise ValueError("isCu() was called on a tool object with isTool == False! This could have resulted in a bad SQL query. ")
+
+        self.conn = PyUber.connect(datasource="D1D_PROD_XEUS", TimeOutInSeconds = 600)
+        filterwarnings("ignore", category=UserWarning, message='.*pandas only supports SQLAlchemy connectable.*')
+
+        s = f"""SELECT 
+          e.cu_flag AS cu_flag
+FROM 
+F_ENTITY e
+WHERE
+              e.entity_deleted_flag = 'N' 
+ AND      e.entity = '{self.name}' """
+        
+        df = pd.read_sql_query(s, self.conn)
+        return str(df['CU_FLAG'].values[0]) == 'Y'
+
+    def isPb(self) -> bool:
+        if not self.isTool: raise ValueError("isPb() was called on a tool object with isTool == False! This could have resulted in a bad SQL query. ")
+        self.conn = PyUber.connect(datasource="D1D_PROD_XEUS", TimeOutInSeconds = 600)
+        filterwarnings("ignore", category=UserWarning, message='.*pandas only supports SQLAlchemy connectable.*')
+
+        s = f"""SELECT 
+          e.pb_flag AS pb_flag
+FROM 
+F_ENTITY e
+WHERE
+              e.entity_deleted_flag = 'N' 
+ AND      e.entity = '{self.name}' """
+        
+        df = pd.read_sql_query(s, self.conn)
+        return str(df['PB_FLAG'].values[0]) == 'Y'
+
+    def isAu(self) -> bool:
+        if not self.isTool: raise ValueError("isAu() was called on a tool object with isTool == False! This could have resulted in a bad SQL query. ")
+        self.conn = PyUber.connect(datasource="D1D_PROD_XEUS", TimeOutInSeconds = 600)
+        filterwarnings("ignore", category=UserWarning, message='.*pandas only supports SQLAlchemy connectable.*')
+
+        s = f"""SELECT 
+          e.au_flag AS au_flag
+FROM 
+F_ENTITY e
+WHERE
+              e.entity_deleted_flag = 'N' 
+ AND      e.entity = '{self.name}' """
+        
+        df = pd.read_sql_query(s, self.conn)
+        return str(df['AU_FLAG'].values[0]) == 'Y'
+
