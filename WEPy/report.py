@@ -10,8 +10,6 @@ from email.utils import make_msgid
 
 from functools import reduce
 
-
-
 class report:
 
     def __init__(self, elements:dict):
